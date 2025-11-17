@@ -1,0 +1,29 @@
+
+
+a {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 2em;
+    font-size: 20px;
+    text-transform: uppercase;
+    background-color: #1E3A8A;
+    font-family: 'Courier New', Courier, monospace;
+    transition: ease-in-out 300ms;
+}
+
+.link-ativo {
+    color: #1E3A8A;
+    background-color: #f6f6f6;
+}
+
+a:hover {
+    color: #1E3A8A;
+    background-color: #ffffff;
+
+
+
+
+}

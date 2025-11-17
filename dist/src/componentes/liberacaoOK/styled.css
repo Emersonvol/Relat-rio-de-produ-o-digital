@@ -1,0 +1,35 @@
+.componente{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+  
+    
+}
+.componente-chbox{
+    display: flex;
+    align-items: center;
+  
+    
+}
+
+.componente-chbox input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+             
+
+
+
+}
+
+.componente-chbox input:nth-last-child(2) {
+    margin-left: 2em;
+    
+
+}
+
+
+.componente label {
+    margin: .2em;
+
+    font-size: 20px;
+}

@@ -1,0 +1,42 @@
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ [LOGO]                         Painel de Controle                          🔔│
+├────────────────────┬───────────────────────────────────────────────────────┤
+│  📂 Início         │                                                       │
+│  🏭 Máquinas       │   ┌───────────────────── Filtros ───────────────────┐ │
+│  📈 Eficiência     │   │ [Setor ⌄] [Canal ⌄] [Período:  01/08/2025 ↕]     │ │
+│  💸 Gastos  <--    │   │ [Granularidade: Dia | Semana | Mês | Ano]        │ │
+│  🧾 Ordens de Serv │   └────────────────────────────────────────────────┘ │
+│  🔓 Liberações     │                                                       │
+│  ⚠️ Segurança      │   ┌───────────── Resumo de Gastos (cards) ──────────┐ │
+│  📊 Relatórios     │   │  Diário   │  Semanal  │  Mensal   │  Anual     │  │
+│  ⚙️ Configurações  │   │  R$ 1.250 │  R$ 8.700 │ R$ 37.000 │ R$ 444.000│   │
+│                    │   └────────────────────────────────────────────────┘   │
+│                    │                                                        │
+│                    │   ┌───── Gráfico: Distribuição por Categoria ─────┐    │
+│                    │   │ [Pizza / Donut] (Luz, Água, Abrasivos, ... )   │   │
+│                    │   └────────────────────────────────────────────────┘   │
+│                    │                                                        │
+│                    │   ┌───── Série temporal (linha) ─ Gastos ao longo ─┐   │
+│                    │   │ x-axis: dias/meses/anos  y-axis: R$            │   │
+│                    │   │ [Linha total] [Linha luz] [Linha água] ...     │   │
+│                    │   └────────────────────────────────────────────────┘   │
+│                    │                                                        │
+│                    │   ┌── Tabela: Gasto por Canal (com produção) ─────┐    │
+│                    │   │ Canal | Produção Dia | Produção Mês | Produção Ano │
+│                    │   │       | Custo/Dia R$ | Custo/Mês R$ | Custo/Ano R$ │
+│                    │   │ C1    | 120 u / R$200 | 3000u / R$5.000 | ...      │
+│                    │   └────────────────────────────────────────────────┘   │
+│                    │                                                        │
+│                    │   ┌── Quebra por Categoria (tabela detalhada) ────┐  │
+│                    │   │ Categoria      | Dia R$ | Mês R$ | Ano R$| %total│ │
+│                    │   │ Luz            |  450   | 13.500 | 162k  | 36%   │ │
+│                    │   │ Água           |  120   | 3.600  | 43k   | 10%   │ │
+│                    │   │ Abrasivos      |  80    | 2.400  | 28k   | 8%    │ │
+│                    │   │ Ferramenta     | 300    | 9.000  | 108k  | 24%   │ │
+│                    │   │ Pinelmatico    | 150    | 4.500  | 54k   | 12%   │ │
+│                    │   │ Sucata Gerada  |  50    | 1.500  | 18k   | 4%    │ │
+│                    │   └────────────────────────────────────────────────┘ │
+│                    │                                                       │
+│                    │   [Exportar CSV] [Exportar PDF]  [Comparar Períodos] │
+│                    │                                                       │
+└────────────────────┴───────────────────────────────────────────────────────┘
