@@ -1,0 +1,56 @@
+.container {
+    padding-top: 1em;
+
+    background-color: #b9c5f5;
+    text-align: center;
+    margin: 1em;
+
+
+}
+
+label {
+    margin-left: 2em;
+    margin-right: .5em;
+    color: #002896;
+    font-size: 18px;
+
+
+}
+
+.container input,
+.container select {
+    font-size: 16px;
+    outline: none;
+    border-radius: 6px;
+    border: none;
+    width: 100px;
+    padding: .2em;
+    margin-right: 1em;
+}
+
+
+
+.container h3 {
+
+    color: #002896;
+    font-size: 18px;
+}
+
+.container strong {
+    font-size: 19px;
+    color: #0f38a7;
+    background-color:#eeeeee ;
+    padding: .3em;
+    border-radius: 10px;
+    margin-right: .5em;
+
+}
+
+.loteOrdem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+
+
+}

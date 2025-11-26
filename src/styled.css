@@ -1,0 +1,23 @@
+main {
+    display: grid;
+    grid-template-areas:
+        'header header header'
+        'navMenu secao secao';
+        grid-template-columns: 1fr 1fr 3fr;
+        
+
+}
+
+header {
+    grid-area: header;
+}
+
+nav {
+    grid-area: navMenu;
+}
+
+section {
+    grid-area: secao;
+    
+
+}
