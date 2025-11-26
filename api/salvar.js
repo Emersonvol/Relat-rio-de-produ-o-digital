@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import clientPromise from "../../server/lib/mongodb.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -6,15 +6,16 @@ export default async function handler(req, res) {
   }
 
   try {
-    const client = await new MongoClient(process.env.MONGODB_URI).connect();
+    const client = await clientPromise;
     const db = client.db("apontamentosDiarios");
 
-    await db.collection("apontamentos").insertOne(req.body);
+    const dados = req.body;
 
-    return res.status(200).json({ ok: true, message: "Salvo com sucesso!" });
+    await db.collection("apontamentos").insertOne(dados);
 
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Erro no servidor" });
+    res.status(200).json({ message: "Salvo com sucesso!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao salvar" });
   }
 }
