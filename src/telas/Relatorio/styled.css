@@ -5,7 +5,7 @@
     width: 98.9%;
     padding: .5em;
     height: 100vh;
-           
+
 }
 
 .relatorio table {
@@ -24,12 +24,12 @@
     text-transform: uppercase;
     cursor: pointer;
     transition: all 300ms;
-    
+
 }
 
-.btns  {
- text-align: center;
- width: 99%;
+.btns {
+    text-align: center;
+    width: 99%;
 
 }
 
@@ -115,11 +115,70 @@ td button {
     color: #ffffff;
     text-transform: uppercase;
     cursor: pointer;
-  
+
 
 
 }
+
 td button:hover {
     background-color: #273055;
     color: #bababa;
+}
+
+
+@media (width:768px) {
+
+
+    .relatorio table {
+
+        width: 99%;
+
+    }
+
+    .btns button {
+        padding: 1em;
+        margin: 0.5em;
+
+    }
+
+    .container {
+
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        text-align: start;
+        gap: 1em;
+
+    }
+
+
+
+    label {
+        margin-left: 1em;
+      
+
+
+    }
+
+    .container input,
+    .container select {
+        font-size: 16px;
+        outline: none;
+        border-radius: 6px;
+        border: none;
+        width: 150px;
+        padding: .2em;
+        margin-right: 1em;
+        text-align: center;
+        
+    }
+
+    .loteOrdem {
+   
+   
+    
+        
+        width: 300px;
+
+}
 }
