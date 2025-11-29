@@ -1,11 +1,13 @@
-nav{
-    display: flex;
-    background-color: #1E3A8A;
-    height: 101.8vh; 
+.offcanvas-body{
+padding: 0;
+background-color: #1E3A8A;
+
+
+
 }
 
-ul{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+.pe-3{
+    padding: 0  !important;
 }
+
+

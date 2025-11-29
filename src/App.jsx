@@ -12,12 +12,12 @@ function App() {
   return (
     <main>
       <BrowserRouter>
-        <Header />
+        
         <Routes>
           <Route>
-            <Route path="/" element={<PaginaPadrao />} />
+            <Route path="/" element={<Relatorio/>} />
             <Route path="Relatorio" element={<Relatorio />} />
-            <Route path="Liberacao" element={<Liberacao />}></Route>
+            <Route path="Liberacao" element={<Liberacao />}/>
             <Route path="*" element={<Erro />} />
           </Route>
         </Routes>

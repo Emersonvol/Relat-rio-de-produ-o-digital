@@ -5,18 +5,10 @@ import Header from "../../componentes/Header";
 
 
 function Relatorio() {
+
     let dataAtual = new Date()
-    let dia = dataAtual.getDate()
-    let mes = dataAtual.getMonth()
-    let ano = dataAtual.getFullYear()
-
-    let dataCompleta = `${dia}/${mes}/${ano}`
-
-    const hora = dataAtual.getHours()
-    const minutos = dataAtual.getMinutes()
-    const segundos = dataAtual.getSeconds()
-
-    const horaCompleta = `${hora}:${minutos}:${segundos}`
+    const dataCompleta = dataAtual.toLocaleDateString()
+    const horaCompleta = dataAtual.toLocaleTimeString()
 
     const [sequencia, setSequencia] = useState(1)
     const [lote, setLote] = useState("")
@@ -30,8 +22,6 @@ function Relatorio() {
     const [historico, setHistorico] = useState([])
     const [paginaAtual, setPaginaAtual] = useState(0)
     const [visualizadoHistorico, setVisualizadoHistorico] = useState(false)
-
-
 
     const qtdPks = [
         { id: 1, pk: 'PK - 77', tipo: "Bar-0428", mult: 210 },
@@ -53,7 +43,7 @@ function Relatorio() {
         { header: "Data", accessorKey: "data" },
         { header: "Nome", accessorKey: "nome" },
         { header: "Sequência de Malas", accessorKey: "sequencia" },
-        { header: "Horário de Saída de Cada Mala", accessorKey: "horario" },
+        { header: "Saída ", accessorKey: "horario" },
         { header: "Somatória", accessorKey: "somatoria" },
         { header: "Ordem", accessorKey: "Ordem" },
         { header: "PK", accessorKey: "PK" },
@@ -111,8 +101,8 @@ function Relatorio() {
 
         }
 
-   
-        const res = await fetch("/api/salvar", {
+
+        const res = await fetch("http://localhost:3001/salvar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dados),
@@ -217,11 +207,11 @@ function Relatorio() {
 
     return (
         <>
-            <Header tituloPagina={"Relatorio de Producao"} />
             <section className="relatorio">
+                <Header tituloPagina={"Relatorio de Producao"} />
 
                 <div className="container">
-                    <label htmlFor="opResponsavel">Nome do operador responsavel:</label>
+                    <label htmlFor="opResponsavel">operador responsavel:</label>
                     <input
                         onChange={handleInputChange}
                         type="text"
@@ -233,21 +223,21 @@ function Relatorio() {
 
 
 
-                    <label>PK:</label>
+                    <label htmlFor="pk">PK:</label>
                     <select name="pk" id="pk" onChange={(pksEscolhindo) => setarPK(pksEscolhindo.target.value)}>
                         <optgroup>
                             <option value="">Selecione o PK</option>
                             {qtdPks.map((pks, index) => (<option key={index} value={pks.mult}>{pks.pk} </option>))}
                         </optgroup>
                     </select>
-                    <label>Multiplus de mala: </label>
-                    <select disabled>
+                    <label htmlFor="malas" >Multiplus de mala: </label>
+                    <select disabled id="malas">
                         <optgroup >
                             <option >{selecionePkMult}</option>
                         </optgroup>
                     </select>
 
-                    <label>Lote:</label>
+                    <label htmlFor="lote-mes">Lote:</label>
                     <input
                         onChange={handleAdicionaLote}
                         type="number"
@@ -256,13 +246,13 @@ function Relatorio() {
                         id="lote-mes"
 
                     />
-                    <label>Ordem:</label>
+                    <label htmlFor="ordem">Ordem:</label>
                     <input
                         type="text"
                         onChange={handleOrdem}
                         value={ordemAtual}
                         className="NomeDoOperador"
-                        id="opResponsavel"
+                        id="ordem"
                         minLength={0}
                         maxLength={4}
                     />
@@ -273,60 +263,61 @@ function Relatorio() {
                     </div>
 
                 </div>
+                <div className="barraDeRolagem">
+                    <table>
+                        <thead>
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <tr key={headerGroup.id}>
+                                    {headerGroup.headers.map((header) => (
+                                        <th key={header.id}
+                                            style={{
+                                                border: "1px solid #1e3a8a",
+                                                padding: "8px",
+                                                background: "#e0e7ff",
+                                                color: "#1e3a8a",
+                                                textAlign: "center",
 
-                <table>
-                    <thead>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <tr key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <th key={header.id}
-                                        style={{
+                                            }}>
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+
+                                        </th>
+                                    ))}
+                                </tr>
+
+                            ))}
+
+                        </thead>
+                        <tbody>
+                            {table.getRowModel().rows.map((row) => (
+                                <tr key={row.id}  >
+                                    {row.getVisibleCells().map((cell) => (
+
+
+                                        <td key={cell.id} style={{
                                             border: "1px solid #1e3a8a",
                                             padding: "8px",
-                                            background: "#e0e7ff",
-                                            color: "#1e3a8a",
+                                            background: "#ebedf5",
+                                            color: "#0130b1",
                                             textAlign: "center",
-                                        }}>
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
+                                        }}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </td>
 
-                                    </th>
-                                ))}
-                            </tr>
+                                    ))}
+                                    <td hidden={habilita}>
 
-                        ))}
+                                        <button onClick={() => excluirEsse(row.index)} >Excluir</button>
 
-                    </thead>
-                    <tbody>
-                        {table.getRowModel().rows.map((row) => (
-                            <tr key={row.id}  >
-                                {row.getVisibleCells().map((cell) => (
-
-
-                                    <td key={cell.id} style={{
-                                        border: "1px solid #1e3a8a",
-                                        padding: "8px",
-                                        background: "#ebedf5",
-                                        color: "#0130b1",
-                                        textAlign: "center",
-                                    }}
-                                    >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </td>
-
-                                ))}
-                                <td hidden={habilita}>
-
-                                    <button onClick={() => excluirEsse(row.index)} >Excluir</button>
-
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 <div className="btns">
                     <button onClick={anterior}>anterior</button>
                     <button onClick={addMala} className="btn-adicionar" disabled={btnDesativado}>Adicionar</button>

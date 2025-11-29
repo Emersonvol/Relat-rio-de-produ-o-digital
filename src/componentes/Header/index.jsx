@@ -1,20 +1,32 @@
 import "./styled.css"
+import { useEffect,  useState } from "react";
 
 function Header({ tituloPagina }) {
-    let dataAtual = new Date()
-    let hora = dataAtual.getHours()
-    let minutos = dataAtual.getMinutes()
-    let segundos = dataAtual.getSeconds()
+    const [dataCompleta, setDataCompleta] = useState("")
+    const [horaCompleta, setHoraCompleta] = useState("")
+    useEffect(() => {
+        let dataAtual = new Date()
 
-    let horaCompleta = `${hora}:${minutos}:${segundos}`
+       
+        const intervaloAtt = setInterval(() => {
+            setHoraCompleta(dataAtual.toLocaleTimeString())
+            setDataCompleta(dataAtual.toLocaleDateString())  
+        },1000)
+        
+        return () =>{
+            clearInterval(intervaloAtt)
+        }
+        
+
+    })
     return (
 
         <>
             <header>
-                <p></p>
+                
                 <img src="./logo-sem-fundo.png" alt="logo do empresa" />
                 <h2>{tituloPagina}</h2>
-                <p>{horaCompleta} <br /> 12/11/2025</p>
+                <p>{horaCompleta} <br /> {dataCompleta}</p>
             </header>
         </>
     )

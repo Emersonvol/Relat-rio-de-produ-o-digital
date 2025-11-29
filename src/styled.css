@@ -1,23 +1,26 @@
 main {
-    display: grid;
-    grid-template-areas:
-        'header header header'
-        'navMenu secao secao';
-        grid-template-columns: 1fr 1fr 3fr;
-        
+   
+    max-width: 1950px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
 
 }
 
-header {
-    grid-area: header;
-}
-
-nav {
-    grid-area: navMenu;
-}
 
 section {
-    grid-area: secao;
     
+    background-color: rgb(211, 212, 214);
+
+}
+
+@media (min-width:320px) {
+    main {
+        width: 100vw;
+    }
+
+
+
+
 
 }
