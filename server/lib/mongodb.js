@@ -1,12 +1,17 @@
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv"
 
-const uri = process.env.MONGODB_URI;
+dotenv.config();
 
-if (!global._mongoClientPromise) {
-  const client = new MongoClient(uri);
-  global._mongoClientPromise = client.connect();
+
+const uri = process.env.MONGODB_URI
+
+let client;
+let clientPromise;
+
+if(!clientPromise){
+    client = new MongoClient(uri);
+    clientPromise = client.connect()
 }
 
-const clientPromise = global._mongoClientPromise;
-
-export default clientPromise;
+export default clientPromise

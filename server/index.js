@@ -23,5 +23,35 @@ app.post("/salvar", async (req, res) => {
   }
 });
 
-app.listen(3001, () => console.log("API rodando na porta 3001"));
 
+
+app.get("/dados",async(req,res)=>{
+  
+  try{
+    const client = await clientPromise;
+    const db = client.db("apontamentosDiarios")
+    
+    const resusltados = await db.collection("apontamentos").find().toArray()
+
+    const agrupado = {}
+    resusltados.forEach(item =>{
+      const ordem = item.Ordem || "SEM_ORDEM";
+
+      if(!agrupado[ordem]) agrupado[ordem] = []
+      agrupado[ordem].push(item)
+
+
+    })
+
+    
+    res.status(200).json(resusltados);
+    
+  }catch(error){
+    console.log(error)
+    res.status(500).json({error:"Erro ao buscar dados"});
+  }
+  
+  
+})
+
+app.listen(3001, () => console.log("API rodando na porta 3001"));

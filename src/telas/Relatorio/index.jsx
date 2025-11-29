@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
 import "./styled.css"
 import Header from "../../componentes/Header";
@@ -115,6 +115,7 @@ function Relatorio() {
 
         const json = await res.json();
         console.log(json);
+
     }
 
 
@@ -129,7 +130,7 @@ function Relatorio() {
         setSequencia(1)
         setLista([]);
         setBtnDesativado(false)
-        setSelecionePkMuilt('')
+
 
         alert("Ordem finalizada e salva no historico");
     }
@@ -186,14 +187,35 @@ function Relatorio() {
         setHabilita(true)
 
     }
+    const carregar = async () => {
+        const res = await fetch("http://localhost:3001/dados");
+        const lista = await res.json();
 
-    const anterior = () => {
+        const agrupado = lista.reduce((acumulador, item) => {
+            if (!acumulador[item.Ordem]) acumulador[item.Ordem] = [];
+            acumulador[item.Ordem].push(item);
+            return acumulador;
+        }, {});
+
+        const tabelas = Object.values(agrupado);
+
+        setHistorico(tabelas);
+
+        
+        
+    };
+    const anterior = async () => {
         if (paginaAtual > 0) {
             setVisualizadoHistorico(true);
             setPaginaAtual(paginaAtual - 1);
-        }
-    };
 
+        }
+
+    };
+    
+    useEffect(() => {
+    carregar();
+}, []);
     const proximo = () => {
         if (paginaAtual < historico.length - 1) {
             setVisualizadoHistorico(true);
@@ -201,7 +223,14 @@ function Relatorio() {
         } else {
             setVisualizadoHistorico(false);
         }
+        
     };
+
+
+
+
+
+
 
 
 
@@ -226,7 +255,7 @@ function Relatorio() {
                     <label htmlFor="pk">PK:</label>
                     <select name="pk" id="pk" onChange={(pksEscolhindo) => setarPK(pksEscolhindo.target.value)}>
                         <optgroup>
-                            <option value="">Selecione o PK</option>
+                            <option value="1">Selecione o PK</option>
                             {qtdPks.map((pks, index) => (<option key={index} value={pks.mult}>{pks.pk} </option>))}
                         </optgroup>
                     </select>
@@ -251,7 +280,7 @@ function Relatorio() {
                         type="text"
                         onChange={handleOrdem}
                         value={ordemAtual}
-                        className="NomeDoOperador"
+                        className="ordem"
                         id="ordem"
                         minLength={0}
                         maxLength={4}
