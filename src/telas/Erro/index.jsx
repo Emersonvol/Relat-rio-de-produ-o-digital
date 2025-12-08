@@ -1,8 +1,12 @@
-export default function Erro () {
+import Header from "../../componentes/Header";
 
-    return(
-        <h2>Erro Pagina nao encontrada</h2>
+export default function Erro() {
 
+    return (
+        <>
+            <Header />
+            <h2>Erro Pagina nao encontrada</h2>
+        </>
 
 
     )

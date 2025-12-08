@@ -12,15 +12,13 @@ header {
 img {
     width: 100px;
     
-
 }
 
 h2 {
     font-size: 25px;
     text-transform: uppercase;
     font-family: 'Courier New', Courier, monospace;
-
-
+    
 }
 
 @media (min-width:320px) and (max-width:1444px){
@@ -31,7 +29,4 @@ header {
    padding: 0;
 }
 
-
-
-    
 }

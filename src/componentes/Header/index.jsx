@@ -7,7 +7,6 @@ function Header({ tituloPagina }) {
     useEffect(() => {
         let dataAtual = new Date()
 
-       
         const intervaloAtt = setInterval(() => {
             setHoraCompleta(dataAtual.toLocaleTimeString())
             setDataCompleta(dataAtual.toLocaleDateString())  
