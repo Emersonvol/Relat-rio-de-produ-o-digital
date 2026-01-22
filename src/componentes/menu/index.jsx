@@ -21,8 +21,8 @@ function Menu() {
                         <div className="offcanvas-body">
                             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
 
-                                <LinksMenu to="Relatorio" children={"📊 Relatorio de Producao"} />
-                                <LinksMenu to="historio" children={"🧾 Historico"} />
+                                <LinksMenu to="relatorio" children={"📊 Relatorio de Producao"} />
+                                <LinksMenu to="historico" children={"🧾 Historico"} />
 
                             </ul>
 

@@ -1,4 +1,4 @@
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
 import "./styled.css";
 import Header from "../../componentes/Header";
@@ -13,10 +13,14 @@ export default function Relatorio() {
     const [sequencia, setSequencia] = useState(1);
     const [lote, setLote] = useState("");
     const [nomeOperador, setNomeOperador] = useState("");
-    const [lista, setLista] = useState([]);
+    const [lista, setLista] = useState(() => {
+        const storage = localStorage.getItem("lista");
+        return storage ? JSON.parse(storage) : [];
+    });
     const [btnDesativado, setBtnDesativado] = useState(false);
     const [ordemAtual, setOrdemAtual] = useState("");
     const [selecionePkMult, setSelecionePkMuilt] = useState("");
+    const [selecionaTipo, setSelecionaTipo] = useState([]);
     const [somatoria, setSomatoria] = useState(0);
     const [habilita, setHabilita] = useState(true);
     const [historico, setHistorico] = useState([]);
@@ -24,38 +28,40 @@ export default function Relatorio() {
     const [visualizadoHistorico, setVisualizadoHistorico] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [mostraAlert, setMostraAlert] = useState(false);
-    const [fraseAlert, setFraseAlert] = useState("")
+    const [fraseAlert, setFraseAlert] = useState("");
+    const [observacao, setObservacao] = useState("");
+    const [operadorFinal, setOperadorFinal] = useState("");
+    const [operadorInicial, setOperadorInicial] = useState("");
+    const [turno, setTurno] = useState(1)
+    const [listaServidor, setListaServidor] = useState([])
+
 
     const qtdPks = [
-        { id: 1, pk: 'PK - 77', tipo: "Bar-0428", mult: 210 },
-        { id: 2, pk: 'PK - 75', tipo: "Bar-0428", mult: 112 },
+        { id: 1, pk: 'PK - 77', tipo: "Bar-0428A", mult: 210 },
+        { id: 2, pk: 'PK - 75', tipo: "Bar-0428B", mult: 112 },
         { id: 3, pk: 'PK - 81', tipo: "Bar-5219", mult: 108 },
-        { id: 4, pk: 'PK - 75', tipo: "Bar-5230", mult: 108 },
+        { id: 4, pk: 'PK - 81', tipo: "Bar-5230", mult: 108 },
     ]
 
-    useEffect(() => {
-        const salvaLista = localStorage.getItem('lista')
-        if (salvaLista) {
-            setLista(JSON.parse(salvaLista))
-        }
 
-    }, [])
     useEffect(() => {
         localStorage.setItem('lista', JSON.stringify(lista))
-        console.log(lista)
     }, [lista])
 
-
     useEffect(() => {
-       const intervalo = setInterval(() => {
+
+        const intervalo = setInterval(() => {
             const zeraData = new Date()
-            if (zeraData.getHours() === 22 && zeraData.getMinutes() === 54 && zeraData.getSeconds() === 0) {
+            if (zeraData.getHours() === 6 && zeraData.getMinutes() === 0 && zeraData.getSeconds() === 0) {
                 setShowModal(true);
-                setNomeOperador("");
+                viradaTurno()
+                setTurno(1)
             }
-            if (zeraData.getHours() === 18 && zeraData.getMinutes() === 0 && zeraData.getSeconds() === 0) {
+            if (zeraData.getHours() === 9 && zeraData.getMinutes() === 28 && zeraData.getSeconds() === 0) {
                 setShowModal(true);
-                setNomeOperador("");
+                viradaTurno()
+                setTurno(2)
+
             }
         }, 1000)
         return () => clearInterval(intervalo);
@@ -63,19 +69,23 @@ export default function Relatorio() {
 
     const data = useMemo(() => {
         if (visualizadoHistorico) {
-            return historico[paginaAtual] || []
+            const pagina = historico[paginaAtual];
+            return Array.isArray(pagina) ? pagina : [];
         }
-        return lista;
-    }, [lista, historico, paginaAtual, visualizadoHistorico])
+
+        return Array.isArray(lista) ? lista : [];
+    }, [lista, historico, paginaAtual, visualizadoHistorico]);
+
 
     const columns = useMemo(() => [
         { header: "Data", accessorKey: "data" },
         { header: "Nome", accessorKey: "nome" },
-        { header: "Sequência de Malas", accessorKey: "sequencia" },
+        { header: "Sequência", accessorKey: "sequencia" },
         { header: "Saída ", accessorKey: "horario" },
         { header: "Somatória", accessorKey: "somatoria" },
         { header: "Ordem", accessorKey: "Ordem" },
         { header: "PK", accessorKey: "PK" },
+
 
     ])
 
@@ -86,13 +96,16 @@ export default function Relatorio() {
 
     const addMala = () => {
 
-        if (nomeOperador.length === 0 || selecionePkMult.length === 0 || lote.length === 0 || ordemAtual.length === 0) {
+        if (nomeOperador.length === 0 || selecionePkMult === 0 || lote.length === 0 || ordemAtual.length === 0) {
             AbriShow()
             setFraseAlert("Preencha todos os campos antes de continuar ")
 
         } else {
+
             const valorAtual = Number(somatoria)
-            const novaSomatoria = valorAtual + Number(selecionePkMult)
+            const novaSomatoria = valorAtual + Number(selecionaTipo[1])
+
+
 
             setLista(prev => [
                 ...prev,
@@ -104,17 +117,22 @@ export default function Relatorio() {
                     somatoria: valorAtual,
                     Ordem: ordemAtual,
                     PK: selecionePkMult,
+
+
                 }
             ]);
 
+
             setSequencia(sequencia + 1)
             setSomatoria(novaSomatoria)
+            setObservacao('')
 
             if (novaSomatoria > Number(lote)) {
                 setBtnDesativado(true)
                 return;
             }
             enviarDados()
+
         }
 
     }
@@ -127,8 +145,13 @@ export default function Relatorio() {
             horario: horaCompleta,
             somatoria,
             Ordem: ordemAtual,
-            PK: selecionePkMult
+            PK: selecionePkMult,
+            obs: observacao,
+            lote,
+            qtdPks
+
         }
+
 
         const res = await fetch("http://localhost:3001/salvar", {
             method: "POST",
@@ -146,10 +169,48 @@ export default function Relatorio() {
 
     }
 
+    const salvarEdicao = async () => {
+        const observacoes = {
+            data: dataCompleta,
+            nome: nomeOperador,
+            sequencia: sequencia,
+            horario: horaCompleta,
+            Ordem: ordemAtual,
+            PK: selecionePkMult,
+            obs: observacao,
+            operadorInicial,
+            operadorFinal,
+        }
+
+        try {
+            const res = await fetch("http://localhost:3001/observacoes", {
+                method: "POST",
+                headers: { "content-Type": "application/json" },
+                body: JSON.stringify(observacoes)
+
+            })
+            await res.json();
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        setHabilita(true)
+        obser()
+
+
+    }
+
+    const viradaTurno = () => {
+
+        setLista([]);
+        setNomeOperador("")
+    }
+
     const finilizar = () => {
         setHistorico(prev => [...prev, lista])
         setVisualizadoHistorico(false)
-        setSomatoria(Number(selecionePkMult))
+        setSomatoria(Number(somatoria))
         setOrdemAtual("")
         setNomeOperador("")
         setLote("")
@@ -164,35 +225,42 @@ export default function Relatorio() {
     const handleInputChange = (e) => setNomeOperador(e.target.value)
     const handleOrdem = (e) => setOrdemAtual(e.target.value)
     const editarItem = () => setHabilita(false)
-    const salvarEdicao = () => setHabilita(true)
+    const obser = (obsText) => setObservacao(obsText)
     const AbriShow = () => setMostraAlert(true);
     const fechaAlert = () => setMostraAlert(false);
     const handleClose = () => setShowModal(false);
+    const opInicial = (inicio) => setOperadorInicial(inicio)
+    const opFinal = (final) => setOperadorFinal(final)
 
-    const setarPK = (pksEscolhindo) => {
-        setSelecionePkMuilt(pksEscolhindo)
-        setSomatoria(Number(pksEscolhindo))
+    const setarTipo = (tipoEscolhido) => {
+        const valor = JSON.parse(tipoEscolhido)
+        setSelecionaTipo(valor)
+        setSelecionePkMuilt(valor[0])
+        setSomatoria(Number(valor[1]))
+
     }
-
+    
     const excluirEsse = (index) => {
 
         const novaLista = lista.filter((_, item) => item !== index)
         const sequenciaNova = novaLista.map((item, i) => ({ ...item, sequencia: i + 1 }))
 
-        let acumulado = Number(selecionePkMult)
+        let acumulado = Number(selecionaTipo[1])
+
         const somaRecalculada = sequenciaNova.map((item) => {
-            acumulado += Number(item.PK)
+            const somatoriaAtual = acumulado
+            acumulado += Number(selecionaTipo[1])
+
             return {
                 ...item,
-                somatoria: acumulado - Number(item.PK)
+                somatoria: somatoriaAtual
             }
-
         })
 
         if (acumulado < lote) {
             setBtnDesativado(false)
-        }
 
+        }
         setSequencia(somaRecalculada.length + 1)
         setLista(somaRecalculada)
         setSomatoria(acumulado)
@@ -201,6 +269,8 @@ export default function Relatorio() {
     const carregar = async () => {
         const res = await fetch("http://localhost:3001/dados");
         const lista = await res.json();
+
+
 
         const agrupado = lista.reduce((acumulador, item) => {
             if (!acumulador[item.Ordem]) acumulador[item.Ordem] = [];
@@ -211,17 +281,24 @@ export default function Relatorio() {
         const tabelas = Object.values(agrupado);
         setHistorico(tabelas);
 
+
+
+        setListaServidor(lista)
+
     };
     const anterior = async () => {
-        if (paginaAtual > 0) {
+        if (paginaAtual >= 0) {
             setVisualizadoHistorico(true);
             setPaginaAtual(paginaAtual - 1);
+
         }
+
 
     };
 
     useEffect(() => {
         carregar();
+
     }, []);
     const proximo = () => {
         if (paginaAtual < historico.length - 1) {
@@ -230,13 +307,32 @@ export default function Relatorio() {
         } else {
             setVisualizadoHistorico(false);
         }
+
     };
+
+    useEffect(() => {
+        if (!listaServidor || listaServidor.length === 0) return
+        carregarOrdemInacabada(listaServidor)
+    })
+
+    const carregarOrdemInacabada = (listaServidor) => {
+        listaServidor.forEach((item) => {
+            if (item.Ordem === ordemAtual) {
+                const newSoma = item.lote - item.somatoria     
+                setLote(newSoma)
+                
+            }
+        })
+
+    }
+
 
     return (
         <>
-            <section className="relatorio">
+            <section className="relatorio" >
                 <Header tituloPagina={"Relatorio de Producao"} />
                 <div className="container">
+                    
                     <label htmlFor="opResponsavel">operador responsavel:</label>
                     <input
                         onChange={handleInputChange}
@@ -245,19 +341,30 @@ export default function Relatorio() {
                         className="NomeDoOperador"
                         id="opResponsavel"
                     />
+
+
+                    <label htmlFor="tipos" >tipo: </label>
+                    <select name="tipos" id="tipos" onChange={(tipoEscolhido) => setarTipo(tipoEscolhido.target.value)}>
+                        <optgroup label="Tipos" >
+                            <option >Selecione o tipo</option>
+                            {qtdPks.map((tipos, index) => (<option key={index} value={JSON.stringify([[tipos.pk], [tipos.mult]])}>{tipos.tipo}</option>))}
+                        </optgroup>
+                    </select>
+
                     <label htmlFor="pk">PK:</label>
-                    <select name="pk" id="pk" onChange={(pksEscolhindo) => setarPK(pksEscolhindo.target.value)}>
-                        <optgroup>
-                            <option value="1">Selecione o PK</option>
-                            {qtdPks.map((pks, index) => (<option key={index} value={pks.mult}>{pks.pk} </option>))}
+                    <select disabled name="pk" id="pk" value={selecionaTipo[0]}>
+                        <optgroup >
+
+                            <option value={selecionaTipo[0]}>
+                                {selecionaTipo[0]}
+                            </option>
                         </optgroup>
                     </select>
                     <label htmlFor="malas" >Multiplus de mala: </label>
-                    <select disabled id="malas">
-                        <optgroup >
-                            <option >{selecionePkMult}</option>
-                        </optgroup>
+                    <select disabled id="malas" value={selecionaTipo[1]} >
+                        <option value={selecionaTipo[1]} >{selecionaTipo[1]} </option>
                     </select>
+
                     <label htmlFor="lote-mes">Lote:</label>
                     <input
                         onChange={handleAdicionaLote}
@@ -269,6 +376,7 @@ export default function Relatorio() {
                     <label htmlFor="ordem">Ordem:</label>
                     <input
                         type="text"
+
                         onChange={handleOrdem}
                         value={ordemAtual}
                         className="ordem"
@@ -276,10 +384,9 @@ export default function Relatorio() {
                         minLength={0}
                         maxLength={4}
                     />
-                    <div className="loteOrdem">
-                        <h3>Lote Atual:<strong>{lote} </strong></h3>
-                        <h3>Ordem Atual :<strong>{ordemAtual}</strong></h3>
-                    </div>
+                        <label htmlFor="turno">Turno:</label>
+                        <input className="turno" id="turno" value={turno} disabled />
+                   
 
                 </div>
                 <div className="barraDeRolagem">
@@ -318,7 +425,7 @@ export default function Relatorio() {
                                             padding: "8px",
                                             background: "#ebedf5",
                                             color: "#0130b1",
-                                            textAlign: "center",
+                                            textAlign: "center"
                                         }}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -326,8 +433,14 @@ export default function Relatorio() {
 
                                     ))}
                                     <td hidden={habilita}>
+                                        <label htmlFor="inicio">Iniciardo por:</label>
+                                        <input type="text" className="inicio" name="inicio" id="inicio" onChange={(inicio) => opInicial(inicio.target.value)} minLength={0} maxLength={15} />
+                                        <label htmlFor="final">Finalizado por:</label>
+                                        <input type="text" className="final" name="final" id="final" onChange={(final) => opFinal(final.target.value)} minLength={0} maxLength={15} />
 
-                                        <button onClick={() => excluirEsse(row.index)} >Excluir</button>
+                                        <label htmlFor="obs">Observação:</label>
+                                        <textarea name="observacao" className="observacao" onChange={(obsText) => obser(obsText.target.value)}></textarea>
+                                        <button onClick={() => excluirEsse(row.index)}>Excluir</button>
 
                                     </td>
                                 </tr>
@@ -340,10 +453,10 @@ export default function Relatorio() {
                     <button onClick={addMala} className="btn-adicionar" disabled={btnDesativado}>Adicionar</button>
                     <button onClick={editarItem} >Editar</button>
                     <button onClick={salvarEdicao} hidden={habilita}>Salvar</button>
-                    <button onClick={finilizar} disabled={!btnDesativado}>Finalizar</button>
+                    <button onClick={finilizar}>Finalizar</button>
                     <button onClick={proximo}>Proximo</button>
                 </div>
-
+                {/*<button onClick={finilizar} disabled={!btnDesativado}>Finalizar</button> */}
             </section>
 
             {showModal && (

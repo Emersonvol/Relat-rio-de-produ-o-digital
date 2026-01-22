@@ -1,5 +1,7 @@
 import "./styled.css"
 import { useEffect,  useState } from "react";
+import {  NavLink } from "react-router-dom";
+
 
 function Header({ tituloPagina }) {
     const [dataCompleta, setDataCompleta] = useState("")
@@ -22,8 +24,7 @@ function Header({ tituloPagina }) {
 
         <>
             <header>
-                
-                <img src="./logo-sem-fundo.png" alt="logo do empresa" />
+                <NavLink className="link" to={'/'} > <img src="./logo-sem-fundo.png" alt="logo do empresa" /></NavLink>
                 <h2>{tituloPagina}</h2>
                 <p>{horaCompleta} <br /> {dataCompleta}</p>
             </header>

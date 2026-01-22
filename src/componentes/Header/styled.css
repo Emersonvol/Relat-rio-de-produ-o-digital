@@ -9,9 +9,19 @@ header {
     width: 100%;
 }
 
-img {
-    width: 100px;
-    
+
+.link{
+    width: 1px;
+    height: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px ;
+}
+header img {
+    width: 150px;
+    position: absolute;
+    top: -.55em;
 }
 
 h2 {
@@ -26,7 +36,12 @@ header {
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   padding: 0;
+   padding: 2em;
+}
+
+h2{
+ 
+  text-align: center;
 }
 
 }

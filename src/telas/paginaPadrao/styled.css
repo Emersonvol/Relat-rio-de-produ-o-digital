@@ -1,0 +1,28 @@
+.paginaPadrao{
+    display: flex;
+    width: 100vw;
+    height: 87.5vh;
+    align-items: center;
+    justify-content: center;
+   
+
+
+}
+.div-paginaPadrao{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.grafico-pag{
+    width: 800px;
+    
+    align-items: end;
+    
+}
+.paginaPadrao img{
+    width: 550px;
+
+
+}

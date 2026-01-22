@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./componentes/Header";
 import Menu from "./componentes/menu";
 import "./styled.css"
 import Relatorio from "./telas/Relatorio";
 import PaginaPadrao from "./telas/paginaPadrao";
 import Erro from "./telas/Erro";
-import Liberacao from "./telas/Liberacao";
+import Historico from "./telas/Historico";
+
 
 function App() {
 
@@ -15,9 +15,9 @@ function App() {
         
         <Routes>
           <Route>
-            <Route path="/" element={<Relatorio/>} />
-            <Route path="Relatorio" element={<Relatorio />} />
-            <Route path="Liberacao" element={<Liberacao />}/>
+            <Route path="/" element={<PaginaPadrao/>} />
+            <Route path="relatorio" element={<Relatorio />} />
+            <Route path="historico" element={<Historico/>}/>
             <Route path="*" element={<Erro />} />
           </Route>
         </Routes>
