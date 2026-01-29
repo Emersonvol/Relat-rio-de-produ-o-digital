@@ -1,12 +1,27 @@
-# React + Vite
+📊 Relatório de Produção Digital
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é uma aplicação web desenvolvida a partir de um caderno físico utilizado no meu setor de trabalho, com o objetivo de digitalizar, organizar e facilitar o controle de informações de produção.
 
-Currently, two official plugins are available:
+A aplicação transforma registros manuais em um ambiente digital mais confiável, acessível e estruturado, reduzindo erros, melhorando a visualização dos dados e preparando a base para futuras automações.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🎯 Objetivo do Projeto
 
-## Expanding the ESLint configuration
+Digitalizar um processo antes feito exclusivamente em papel
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Centralizar informações de produção em um sistema web
+
+Melhorar a organização e a legibilidade dos dados
+
+Criar uma solução escalável e reutilizável
+
+Aplicar conceitos práticos de desenvolvimento front-end
+
+🛠 Tecnologias Utilizadas
+
+React.js – Construção da interface e componentes
+
+JavaScript (ES6+) – Lógica da aplicação
+
+CSS3 – Estilização e layout da interface
+
+HTML5 – Estrutura base da aplicação
