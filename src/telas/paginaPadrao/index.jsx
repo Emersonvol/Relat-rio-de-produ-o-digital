@@ -8,8 +8,6 @@ function PaginaPadrao() {
       <Header />
 
       <section className="paginaPadrao">
-        <BarsDataset />
-
         <div className="div-paginaPadrao">
           <h2>Relatorio de produção </h2>
           <img src="./logo-sem-fundo.png" />
@@ -25,3 +23,4 @@ function PaginaPadrao() {
 
 
 export default PaginaPadrao;
+
